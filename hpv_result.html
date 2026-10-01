@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HPV Assessment Result | AI STI Assistant</title>
+
+
+    <!-- Bootstrap 5 -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <style>
+
+        body {
+            background: #f5f8fc;
+            font-family: Arial, sans-serif;
+            color: #1b263b;
+        }
+
+
+        /* ================================
+           NAVBAR
+        ================================= */
+
+        .navbar {
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+        }
+
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        .result-header {
+            background: linear-gradient(
+                135deg,
+                #0d6efd,
+                #084298
+            );
+
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .result-header h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .result-header p {
+            margin: 0;
+            font-size: 17px;
+            opacity: 0.95;
+        }
+
+
+        /* ================================
+           MAIN CONTAINER
+        ================================= */
+
+        .result-container {
+            max-width: 1000px;
+            margin: 45px auto;
+        }
+
+
+        /* ================================
+           RESULT CARD
+        ================================= */
+
+        .result-card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+
+        /* ================================
+           RESULT SUMMARY
+        ================================= */
+
+        .result-summary {
+            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #e1e8f0;
+            border-radius: 16px;
+            padding: 35px 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .prediction-label {
+            font-size: 15px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .prediction-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #084298;
+            margin-bottom: 20px;
+        }
+
+
+        /* ================================
+           PROBABILITY
+        ================================= */
+
+        .probability-box {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .probability-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            height: 16px;
+            border-radius: 20px;
+            background: #e9ecef;
+        }
+
+        .progress-bar {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* ================================
+           SECTION TITLE
+        ================================= */
+
+        .section-title {
+            color: #0d6efd;
+            font-weight: 700;
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9f1ff;
+            padding-bottom: 10px;
+        }
+
+
+        /* ================================
+           RESULTS TABLE
+        ================================= */
+
+        .results-table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .results-table th {
+            background: #0d6efd;
+            color: white;
+            font-weight: 600;
+        }
+
+        .results-table td {
+            vertical-align: middle;
+        }
+
+        .probability-number {
+            font-weight: 700;
+        }
+
+
+        /* ================================
+           ASSESSMENT INFO
+        ================================= */
+
+        .info-box {
+            background: #eaf3ff;
+            border-left: 5px solid #0d6efd;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-box strong {
+            color: #084298;
+            font-size: 17px;
+        }
+
+
+        /* ================================
+           WARNING
+        ================================= */
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffda6a;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-top: 25px;
+            color: #664d03;
+        }
+
+        .warning-box strong {
+            font-size: 16px;
+        }
+
+
+        /* ================================
+           BUTTONS
+        ================================= */
+
+        .action-area {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            padding: 12px 28px;
+            border-radius: 9px;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        .footer {
+            margin-top: 60px;
+            background: #212529;
+            color: #adb5bd;
+            padding: 32px 15px;
+            text-align: center;
+        }
+
+        .footer h5 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 768px) {
+
+            .result-header {
+                padding: 45px 15px;
+            }
+
+            .result-header h1 {
+                font-size: 30px;
+            }
+
+            .result-card {
+                padding: 22px;
+            }
+
+            .prediction-value {
+                font-size: 26px;
+            }
+
+            .action-btn {
+                width: 100%;
+                margin: 6px 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <div class="container">
+
+
+        <a
+            class="navbar-brand fw-bold"
+            href="{{ url_for('home') }}"
+        >
+            🩺 AI STI Assistant
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+            <ul class="navbar-nav ms-auto">
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('home') }}"
+                    >
+                        Home
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('symptom_checker') }}"
+                    >
+                        Symptom Checker
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<section class="result-header">
+
+    <div class="container">
+
+        <h1>
+            HPV Preliminary Assessment Result
+        </h1>
+
+        <p>
+            AI-assisted assessment generated using the
+            trained Random Forest Machine Learning model
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="container result-container">
+
+
+    <!-- =================================================
+         MAIN RESULT CARD
+    ================================================== -->
+
+    <div class="result-card">
+
+
+        <!-- RESULT SUMMARY -->
+
+        <div class="result-summary">
+
+            <div class="result-icon">
+                🔬
+            </div>
+
+
+            <div class="prediction-label">
+                Model Prediction
+            </div>
+
+
+            <div class="prediction-value">
+
+                {% if prediction|string == "1" %}
+
+                    HPV Positive
+
+                {% elif prediction|string == "0" %}
+
+                    HPV Negative
+
+                {% else %}
+
+                    {{ prediction }}
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PROBABILITY -->
+
+            <div class="probability-box">
+
+                <div class="probability-label">
+
+                    <span>
+                        Prediction Probability
+                    </span>
+
+                    <span>
+                        {{ top_probability }}%
+                    </span>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        data-width="{{ top_probability }}"
+                        aria-valuenow="{{ top_probability }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+
+                        {{ top_probability }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MODEL RESULTS
+        ================================================== -->
+
+        <h3 class="section-title">
+            Model Probability Results
+        </h3>
+
+
+        <div class="table-responsive">
+
+            <table
+                class="table table-bordered table-hover results-table"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Classification
+                        </th>
+
+                        <th>
+                            Probability
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for label, probability in results %}
+
+                    <tr>
+
+                        <td>
+
+                            {% if label|string == "1" %}
+
+                                HPV Positive
+
+                            {% elif label|string == "0" %}
+
+                                HPV Negative
+
+                            {% else %}
+
+                                {{ label }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="probability-number">
+                                {{ probability }}%
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         ABOUT RESULT
+    ================================================== -->
+
+    <div class="result-card">
+
+
+        <h3 class="section-title">
+            About This Result
+        </h3>
+
+
+        <div class="info-box">
+
+            <strong>
+                Machine Learning Assessment
+            </strong>
+
+
+            <p class="mb-0 mt-2">
+
+                The result shown above was generated by the
+                trained HPV Random Forest classification model
+                using the information provided during the
+                preliminary assessment.
+
+            </p>
+
+        </div>
+
+
+        <p>
+
+            The model prediction represents a computational
+            classification based on patterns learned from the
+            training dataset. The result should be interpreted
+            as a preliminary assessment rather than a confirmed
+            medical diagnosis.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         DISCLAIMER
+    ================================================== -->
+
+    <div class="result-card">
+
+
+        <div class="warning-box">
+
+            <strong>
+                Important Health Disclaimer
+            </strong>
+
+
+            <p class="mb-0 mt-2">
+
+                This system is designed for educational and
+                research purposes. It provides a preliminary
+                machine-learning assessment and is
+                <strong>not a clinical diagnosis</strong>.
+
+                The result should not be used as a substitute
+                for professional medical advice, laboratory
+                testing, biopsy examination, or consultation
+                with a qualified healthcare professional.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         ACTION BUTTONS
+    ================================================== -->
+
+    <div class="action-area">
+
+
+        <a
+            href="{{ url_for('hpv_assessment') }}"
+            class="btn btn-primary action-btn"
+        >
+            🔄 New HPV Assessment
+        </a>
+
+
+        <a
+            href="{{ url_for('home') }}"
+            class="btn btn-outline-secondary action-btn"
+        >
+            🏠 Back to Home
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <h5>
+        AI-Powered STI Preliminary Assessment Assistant
+    </h5>
+
+
+    <p class="mb-1">
+        Developed for educational and research purposes.
+    </p>
+
+
+    <small>
+        © 2026 AI STI Assessment System
+    </small>
+
+</footer>
+
+
+
+<!-- =====================================================
+     BOOTSTRAP JS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- =====================================================
+     PROBABILITY BAR SCRIPT
+===================================================== -->
+
+<script>
+
+    document
+        .querySelectorAll(".progress-bar")
+        .forEach(function(bar) {
+
+            const width = bar.getAttribute("data-width");
+
+            if (width !== null) {
+
+                bar.style.width = width + "%";
+
+            }
+
+        });
+
+</script>
+
+
+</body>
+
+</html>

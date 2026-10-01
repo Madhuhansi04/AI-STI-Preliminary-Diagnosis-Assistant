@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HPV Preliminary Assessment | AI STI Assistant</title>
+
+
+    <!-- =====================================================
+         BOOTSTRAP 5
+    ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           GENERAL
+        ====================================================== */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f5f8fc;
+            font-family: Arial, sans-serif;
+            color: #1b263b;
+            margin: 0;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ====================================================== */
+
+        .assessment-header {
+            background: linear-gradient(
+                135deg,
+                #0d6efd,
+                #084298
+            );
+
+            color: white;
+            padding: 55px 20px;
+            text-align: center;
+        }
+
+        .assessment-header h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .assessment-header p {
+            margin: 0 auto;
+            max-width: 800px;
+            font-size: 17px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .assessment-container {
+            max-width: 1050px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+
+
+        /* =====================================================
+           INFORMATION CARD
+        ====================================================== */
+
+        .intro-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 6px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        .intro-card h3 {
+            color: #084298;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .intro-card p {
+            color: #5c677d;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           FORM CARD
+        ====================================================== */
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+
+            box-shadow:
+                0 6px 25px rgba(0, 0, 0, 0.07);
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =====================================================
+           SECTION TITLE
+        ====================================================== */
+
+        .section-title {
+            color: #0d6efd;
+            font-weight: 700;
+            font-size: 23px;
+
+            margin-top: 10px;
+            margin-bottom: 25px;
+
+            padding-bottom: 10px;
+
+            border-bottom: 2px solid #e9f1ff;
+        }
+
+
+        /* =====================================================
+           FORM LABEL
+        ====================================================== */
+
+        .form-label {
+            font-weight: 600;
+            color: #172b4d;
+            margin-bottom: 8px;
+        }
+
+
+        /* =====================================================
+           FORM CONTROLS
+        ====================================================== */
+
+        .form-control,
+        .form-select {
+
+            min-height: 48px;
+
+            border-radius: 9px;
+
+            border: 1px solid #d6dee8;
+
+            padding: 10px 13px;
+
+            font-size: 15px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color: #0d6efd;
+
+            box-shadow:
+                0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+        }
+
+
+        /* =====================================================
+           FIELD HELP TEXT
+        ====================================================== */
+
+        .field-help {
+
+            display: block;
+
+            margin-top: 6px;
+
+            font-size: 13px;
+
+            color: #6c757d;
+        }
+
+
+        /* =====================================================
+           DISCLAIMER
+        ====================================================== */
+
+        .disclaimer-box {
+
+            background: #fff3cd;
+
+            border: 1px solid #ffda6a;
+
+            border-radius: 12px;
+
+            padding: 20px 22px;
+
+            margin-top: 10px;
+
+            color: #664d03;
+
+            line-height: 1.7;
+        }
+
+        .disclaimer-box strong {
+
+            display: block;
+
+            font-size: 17px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           BUTTON AREA
+        ====================================================== */
+
+        .button-area {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            margin-bottom: 40px;
+        }
+
+        .assessment-btn {
+
+            background: #0d6efd;
+
+            border: none;
+
+            color: white;
+
+            padding: 14px 32px;
+
+            border-radius: 10px;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            min-width: 330px;
+
+            transition: all 0.2s ease;
+        }
+
+        .assessment-btn:hover {
+
+            background: #084298;
+
+            transform: translateY(-1px);
+        }
+
+        .assessment-btn:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .footer {
+
+            margin-top: 50px;
+
+            background: #212529;
+
+            color: #adb5bd;
+
+            padding: 32px 15px;
+
+            text-align: center;
+        }
+
+        .footer h5 {
+
+            color: white;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 768px) {
+
+            .assessment-header {
+
+                padding: 45px 15px;
+            }
+
+            .assessment-header h1 {
+
+                font-size: 29px;
+            }
+
+            .assessment-header p {
+
+                font-size: 15px;
+            }
+
+            .form-card {
+
+                padding: 20px;
+            }
+
+            .intro-card {
+
+                padding: 20px;
+            }
+
+            .assessment-btn {
+
+                width: 100%;
+
+                min-width: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <div class="container">
+
+
+        <!-- BRAND -->
+
+        <a
+            class="navbar-brand fw-bold"
+            href="{{ url_for('home') }}"
+        >
+
+            🩺 AI STI Assistant
+
+        </a>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <!-- NAVIGATION -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+            <ul class="navbar-nav ms-auto">
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('home') }}"
+                    >
+
+                        Home
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('symptom_checker') }}"
+                    >
+
+                        Symptom Checker
+
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<section class="assessment-header">
+
+    <div class="container">
+
+        <h1>
+            HPV Preliminary Assessment
+        </h1>
+
+        <p>
+            Provide the information below to receive an
+            AI-assisted preliminary assessment based on the
+            trained HPV Random Forest machine learning model.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="assessment-container">
+
+
+    <!-- =================================================
+         INTRODUCTION
+    ================================================== -->
+
+    <div class="intro-card">
+
+        <h3>
+            🧬 About This Assessment
+        </h3>
+
+        <p>
+
+            This assessment uses information provided by the
+            user and a trained machine learning model to
+            estimate the classification learned from the
+            project dataset.
+
+            Please provide values as accurately as possible.
+
+            The result is intended for educational and research
+            purposes only.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FORM
+    ================================================== -->
+
+    <form
+    method="POST"
+    action="{{ url_for('predict_hpv') }}"
+    id="hpvAssessmentForm"
+    novalidate
+>
+
+<input type="hidden" name="STDs:condylomatosis" value="0">
+<input type="hidden" name="STDs:cervical condylomatosis" value="0">
+<input type="hidden" name="STDs:vaginal condylomatosis" value="0">
+<input type="hidden" name="STDs:vulvo-perineal condylomatosis" value="0">
+<input type="hidden" name="STDs:genital herpes" value="0">
+<input type="hidden" name="STDs:AIDS" value="0">
+<input type="hidden" name="STDs:HIV" value="0">
+<input type="hidden" name="STDs:Hepatitis B" value="0">
+<input type="hidden" name="STDs:HPV" value="0">
+
+
+
+        <!-- =================================================
+             PERSONAL INFORMATION
+        ================================================== -->
+
+        <div class="form-card">
+
+            <h3 class="section-title">
+                1. Personal Information
+            </h3>
+
+
+            <div class="row g-4">
+
+
+                <!-- AGE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Age"
+                        class="form-label"
+                    >
+
+                        Age
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Age"
+                        name="Age"
+                        min="1"
+                        max="120"
+                        step="1"
+                        placeholder="Enter your age"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter your age in years.
+                    </small>
+
+                </div>
+
+
+
+                <!-- SEXUAL PARTNERS -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Number of sexual partners"
+                        class="form-label"
+                    >
+
+                        Number of sexual partners
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Number_of_sexual_partners"
+                        name="Number of sexual partners"
+                        min="0"
+                        step="1"
+                        placeholder="e.g. 2"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter the number represented in the dataset.
+                    </small>
+
+                </div>
+
+
+
+                <!-- AGE AT FIRST SEXUAL INTERCOURSE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Age at first sexual intercourse"
+                        class="form-label"
+                    >
+
+                        Age at first sexual intercourse
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Age_at_first_sexual_intercourse"
+                        name="Age at first sexual intercourse"
+                        min="0"
+                        max="120"
+                        step="1"
+                        placeholder="Enter age"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter the value used by the dataset.
+                    </small>
+
+                </div>
+
+
+
+                <!-- PREGNANCIES -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Num of pregnancies"
+                        class="form-label"
+                    >
+
+                        Number of pregnancies
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Num_of_pregnancies"
+                        name="Num of pregnancies"
+                        min="0"
+                        step="1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter 0 if not applicable.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SMOKING INFORMATION
+        ================================================== -->
+
+        <div class="form-card">
+
+            <h3 class="section-title">
+                2. Smoking Information
+            </h3>
+
+
+            <div class="row g-4">
+
+
+                <!-- SMOKING -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Smokes"
+                        class="form-label"
+                    >
+
+                        Do you smoke?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="Smokes"
+                        name="Smokes"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- YEARS OF SMOKING -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Smokes_years"
+                        class="form-label"
+                    >
+
+                        Years of smoking
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Smokes_years"
+                        name="Smokes (years)"
+                        min="0"
+                        step="0.1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter 0 if you do not smoke.
+                    </small>
+
+                </div>
+
+
+
+                <!-- PACKS PER YEAR -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Smokes_packs_year"
+                        class="form-label"
+                    >
+
+                        Smoking packs per year
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Smokes_packs_year"
+                        name="Smokes (packs/year)"
+                        min="0"
+                        step="0.1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter 0 if you do not smoke.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             HORMONAL CONTRACEPTIVES
+        ================================================== -->
+
+        <div class="form-card">
+
+            <h3 class="section-title">
+                3. Hormonal Contraceptive Information
+            </h3>
+
+
+            <div class="row g-4">
+
+
+                <!-- HORMONAL CONTRACEPTIVES -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Hormonal Contraceptives"
+                        class="form-label"
+                    >
+
+                        Use hormonal contraceptives?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="Hormonal_Contraceptives"
+                        name="Hormonal Contraceptives"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- YEARS OF HORMONAL CONTRACEPTIVE USE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="Hormonal Contraceptives_years"
+                        class="form-label"
+                    >
+
+                        Years of hormonal contraceptive use
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="Hormonal_Contraceptives_years"
+                        name="Hormonal Contraceptives (years)"
+                        min="0"
+                        step="0.1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter 0 if not applicable.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             IUD INFORMATION
+        ================================================== -->
+
+        <div class="form-card">
+
+            <h3 class="section-title">
+                4. IUD Information
+            </h3>
+
+
+            <div class="row g-4">
+
+
+                <!-- IUD -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="IUD"
+                        class="form-label"
+                    >
+
+                        Use an IUD?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="IUD"
+                        name="IUD"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- YEARS OF IUD USE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="IUD_years"
+                        class="form-label"
+                    >
+
+                        Years of IUD use
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="IUD_years"
+                        name="IUD (years)"
+                        min="0"
+                        step="0.1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter 0 if not applicable.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             STD INFORMATION
+        ================================================== -->
+
+        <div class="form-card">
+
+            <h3 class="section-title">
+                5. Previous STD Information
+            </h3>
+
+
+            <div class="row g-4">
+
+
+                <!-- PREVIOUS STD -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs"
+                        class="form-label"
+                    >
+
+                        Previous STD history?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="STDs"
+                        name="STDs"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- NUMBER OF PREVIOUS STDS -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_number"
+                        class="form-label"
+                    >
+
+                        Number of previous STDs
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="STDs_number"
+                        name="STDs (number)"
+                        min="0"
+                        step="1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter 0 if there is no previous STD history.
+                    </small>
+
+                </div>
+
+
+
+                <!-- SYPHILIS -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_syphilis"
+                        class="form-label"
+                    >
+
+                        Previous syphilis diagnosis?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="STDs_syphilis"
+                        name="STDs:syphilis"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- PELVIC INFLAMMATORY DISEASE -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_Pelvic inflammatory disease"
+                        class="form-label"
+                    >
+
+                        Pelvic inflammatory disease?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="STDs_Pelvic_inflammatory_disease"
+                        name="STDs:pelvic inflammatory disease"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- MOLLUSCUM CONTAGIOSUM -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_Molluscum_contagiosum"
+                        class="form-label"
+                    >
+
+                        Molluscum contagiosum?
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="STDs_Molluscum_contagiosum"
+                        name="STDs:molluscum contagiosum"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- NUMBER OF STD DIAGNOSES -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_diagnosis"
+                        class="form-label"
+                    >
+
+                        Number of STD diagnoses
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="STDs_diagnosis"
+                        name="STDs:Number of diagnosis"
+                        min="0"
+                        step="1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter the value used by the dataset.
+                    </small>
+
+                </div>
+
+
+
+                <!-- TIME SINCE FIRST STD DIAGNOSIS -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_Time_since_first_diagnosis"
+                        class="form-label"
+                    >
+
+                        Time since first STD diagnosis
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="STDs_Time_since_first_diagnosis"
+                        name="STDs:Time since first diagnosis"
+                        min="0"
+                        step="0.1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter the value used by the dataset.
+                    </small>
+
+                </div>
+
+
+
+                <!-- TIME SINCE LAST STD DIAGNOSIS -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="STDs_Time_since_last_diagnosis"
+                        class="form-label"
+                    >
+
+                        Time since last STD diagnosis
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="STDs_Time_since_last_diagnosis"
+                        name="STDs:Time since last diagnosis"
+                        min="0"
+                        step="0.1"
+                        placeholder="e.g. 0"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Enter the value used by the dataset.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DISCLAIMER
+        ================================================== -->
+
+        <div class="disclaimer-box">
+
+            <strong>
+                Important:
+            </strong>
+
+            This application provides a preliminary
+            machine-learning assessment for educational and
+            research purposes.
+
+            It is <strong>not a clinical diagnosis</strong>
+            and does not replace professional medical advice,
+            laboratory testing, biopsy examination, or
+            consultation with a qualified healthcare
+            professional.
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUBMIT BUTTON
+        ================================================== -->
+
+        <div class="button-area">
+
+            <button
+                type="submit"
+                class="btn assessment-btn"
+                id="submitAssessment"
+            >
+
+                🔬 Generate Preliminary Assessment
+
+            </button>
+
+        </div>
+
+
+    </form>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <h5>
+        AI-Powered STI Preliminary Assessment Assistant
+    </h5>
+
+    <p class="mb-1">
+        Developed for educational and research purposes.
+    </p>
+
+    <small>
+        © 2026 AI STI Assessment System
+    </small>
+
+</footer>
+
+
+
+<!-- =====================================================
+     BOOTSTRAP JS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+<!-- =====================================================
+     PAGE POSITION FIX
+===================================================== -->
+
+<script>
+
+    /*
+     * Prevent the browser from restoring the previous
+     * scroll position when opening this page.
+     */
+
+    if ("scrollRestoration" in history) {
+
+        history.scrollRestoration = "manual";
+
+    }
+
+
+    /*
+     * Always start the assessment page from the top.
+     */
+
+    window.addEventListener("load", function () {
+
+        window.scrollTo(0, 0);
+
+    });
+
+
+    /*
+     * Also force the page to the top after a short delay.
+     * This helps when the browser restores the old position
+     * after the page has loaded.
+     */
+
+    setTimeout(function () {
+
+        window.scrollTo(0, 0);
+
+    }, 100);
+
+
+</script>
+
+
+
+<!-- =====================================================
+     FORM VALIDATION
+===================================================== -->
+
+<script>
+
+    const form = document.getElementById("hpvAssessmentForm");
+
+    const button = document.getElementById("submitAssessment");
+
+
+    form.addEventListener("submit", function(event) {
+
+
+        /*
+         * Use browser's built-in validation.
+         */
+
+        if (!form.checkValidity()) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            form.classList.add("was-validated");
+
+            return;
+
+        }
+
+
+        /*
+         * Prevent accidental double-click.
+         */
+
+        button.disabled = true;
+
+        button.innerHTML =
+            "⏳ Generating Preliminary Assessment...";
+
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI-Powered STI Preliminary Assessment Assistant</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7faff;
+            color: #17213a;
+            line-height: 1.6;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            width: 100%;
+            background: white;
+            border-bottom: 1px solid #e5eaf2;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1769e0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #33415c;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #1769e0;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 610px;
+            padding: 65px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+
+            background:
+                radial-gradient(circle at 80% 30%, #dbeeff 0%, transparent 35%),
+                linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+        }
+
+        .hero-left {
+            width: 52%;
+        }
+
+        .hero-left h1 {
+            font-size: 62px;
+            line-height: 1.02;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #182139;
+        }
+
+        .hero-left h1 .blue {
+            color: #1769e0;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            color: #52709d;
+            max-width: 720px;
+            margin-bottom: 25px;
+        }
+
+        .hero-text {
+            font-size: 16px;
+            color: #344f78;
+            max-width: 690px;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            display: inline-block;
+            padding: 15px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .primary-btn {
+            background: #1769e0;
+            color: white;
+            box-shadow: 0 8px 20px rgba(23, 105, 224, 0.25);
+        }
+
+        .primary-btn:hover {
+            background: #0959c8;
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #1769e0;
+            border: 1px solid #1769e0;
+        }
+
+        .secondary-btn:hover {
+            background: #edf5ff;
+        }
+
+        /* ================= HERO CARD ================= */
+
+        .hero-right {
+            width: 43%;
+            min-height: 500px;
+
+            border-radius: 28px;
+            padding: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(38, 140, 210, 0.82),
+                    rgba(11, 75, 150, 0.90)
+                );
+
+            box-shadow: 0 25px 60px rgba(20, 85, 160, 0.22);
+        }
+
+        .hero-card {
+            width: 100%;
+            max-width: 410px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .robot-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: #e7f1ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+            color: #1a253d;
+        }
+
+        .hero-card p {
+            color: #637797;
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            color: #4b6285;
+            font-size: 15px;
+        }
+
+        .check {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #1769e0;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .card-main-btn {
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 13px;
+            margin-top: 20px;
+            border-radius: 7px;
+            background: #1769e0;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .card-main-btn:hover {
+            background: #0959c8;
+        }
+
+        .card-hpv-btn {
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 7px;
+            background: white;
+            color: #1769e0;
+            border: 1px solid #1769e0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card-hpv-btn:hover {
+            background: #edf5ff;
+        }
+
+        /* ================= ABOUT SECTION ================= */
+
+        .about {
+            padding: 80px 5%;
+            background: white;
+            text-align: center;
+        }
+
+        .section-label {
+            color: #1769e0;
+            font-weight: 800;
+            letter-spacing: 3px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .about h2 {
+            color: #1769e0;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .about-description {
+            max-width: 850px;
+            margin: auto;
+            color: #607494;
+            font-size: 17px;
+        }
+
+        /* ================= DISEASE SECTION ================= */
+
+        .diseases {
+            padding: 75px 5%;
+            background: #ffffff;
+        }
+
+        .disease-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .disease-heading h2 {
+            color: #1769e0;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .disease-heading p {
+            color: #667a99;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .disease-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .disease-card {
+            border: 1px solid #dce6f3;
+            border-radius: 17px;
+            padding: 35px 25px;
+            text-align: center;
+            background: white;
+            min-height: 330px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            box-shadow: 0 10px 25px rgba(31, 76, 125, 0.05);
+            transition: 0.25s ease;
+        }
+
+        .disease-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(31, 76, 125, 0.12);
+        }
+
+        .disease-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: #edf5ff;
+            color: #1769e0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 27px;
+            margin-bottom: 18px;
+        }
+
+        .disease-card h3 {
+            font-size: 23px;
+            color: #182139;
+            margin-bottom: 13px;
+        }
+
+        .disease-card p {
+            color: #637797;
+            font-size: 14px;
+            line-height: 1.8;
+            flex-grow: 1;
+        }
+
+        .assessment-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 18px;
+
+            border: 1px solid #1769e0;
+            border-radius: 6px;
+
+            color: #1769e0;
+            background: white;
+
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .assessment-btn:hover {
+            background: #1769e0;
+            color: white;
+        }
+
+        /* ================= DISCLAIMER ================= */
+
+        .disclaimer {
+            margin: 0 5% 70px;
+            padding: 25px 30px;
+            background: #fff7dc;
+            border: 1px solid #f0d477;
+            border-radius: 12px;
+            color: #67531c;
+        }
+
+        .disclaimer h3 {
+            margin-bottom: 8px;
+            color: #624b08;
+        }
+
+        .disclaimer p {
+            font-size: 14px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #17213a;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #c8d3e5;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .hero {
+                flex-direction: column;
+                padding-top: 50px;
+            }
+
+            .hero-left,
+            .hero-right {
+                width: 100%;
+            }
+
+            .hero-left h1 {
+                font-size: 48px;
+            }
+
+            .disease-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 45px 5%;
+            }
+
+            .hero-left h1 {
+                font-size: 40px;
+            }
+
+            .hero-right {
+                padding: 25px;
+            }
+
+            .disease-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about h2,
+            .disease-heading h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        AI-STI Assistant
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('symptom_checker') }}">
+            Symptom Checker
+        </a>
+
+        <a href="{{ url_for('hpv_assessment') }}">
+            HPV Assessment
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO SECTION
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+            AI-Powered STI
+            <span class="blue">Preliminary</span>
+            <span class="blue">Assessment</span>
+            Assistant
+        </h1>
+
+        <p class="hero-description">
+            A machine-learning based web application designed to provide
+            a preliminary, symptom-based assessment of selected viral
+            Sexually Transmitted Infections (STIs).
+        </p>
+
+        <p class="hero-text">
+            The system analyses selected symptom information using trained
+            Machine Learning models and provides probability-based
+            preliminary assessment results.
+        </p>
+
+        <div class="hero-buttons">
+
+            <!-- HIV / HSV / Hepatitis B -->
+            <a href="{{ url_for('symptom_checker') }}"
+               class="primary-btn">
+                Start Symptom Assessment
+            </a>
+
+            <!-- HPV -->
+            <a href="{{ url_for('hpv_assessment') }}"
+               class="secondary-btn">
+                HPV Assessment
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SIDE CARD -->
+
+    <div class="hero-right">
+
+        <div class="hero-card">
+
+            <div class="robot-icon">
+                🤖
+            </div>
+
+            <h2>
+                AI-Based Assessment
+            </h2>
+
+            <p>
+                Analyse selected symptom information using trained
+                Machine Learning models.
+            </p>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Symptom-based assessment
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Machine Learning prediction
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Probability-based results
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Preliminary assessment
+            </div>
+
+            <a href="{{ url_for('symptom_checker') }}"
+               class="card-main-btn">
+                Open Symptom Checker
+            </a>
+
+            <a href="{{ url_for('hpv_assessment') }}"
+               class="card-hpv-btn">
+                Open HPV Assessment
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT SECTION
+===================================================== -->
+
+<section class="about" id="about">
+
+    <div class="section-label">
+        ABOUT THE SYSTEM
+    </div>
+
+    <h2>
+        Viral STI Preliminary Assessment
+    </h2>
+
+    <p class="about-description">
+        The proposed system applies Artificial Intelligence and
+        Machine Learning techniques to support preliminary
+        symptom-based assessment of selected viral Sexually
+        Transmitted Infections.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     DISEASE SECTION
+===================================================== -->
+
+<section class="diseases">
+
+    <div class="disease-heading">
+
+        <h2>
+            Select an Assessment
+        </h2>
+
+        <p>
+            Choose the relevant assessment below to provide information
+            for an AI-assisted preliminary assessment.
+        </p>
+
+    </div>
+
+
+    <div class="disease-grid">
+
+
+        <!-- =================================================
+             HIV / AIDS
+        ================================================== -->
+
+        <div class="disease-card">
+
+            <div class="disease-icon">
+                ☣
+            </div>
+
+            <h3>
+                HIV/AIDS
+            </h3>
+
+            <p>
+                Preliminary assessment using selected symptom
+                features and a trained Machine Learning model.
+            </p>
+
+            <a href="{{ url_for('symptom_checker') }}"
+               class="assessment-btn">
+                HIV/AIDS Assessment
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             HPV
+        ================================================== -->
+
+        <div class="disease-card">
+
+            <div class="disease-icon">
+                🛡
+            </div>
+
+            <h3>
+                HPV
+            </h3>
+
+            <p>
+                Preliminary assessment using available HPV
+                dataset features and a trained Random Forest model.
+            </p>
+
+            <a href="{{ url_for('hpv_assessment') }}"
+               class="assessment-btn">
+                HPV Assessment
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             HSV
+        ================================================== -->
+
+        <div class="disease-card">
+
+            <div class="disease-icon">
+                ♡
+            </div>
+
+            <h3>
+                HSV
+            </h3>
+
+            <p>
+                Machine Learning based preliminary assessment
+                of HSV-related symptom information.
+            </p>
+
+            <a href="{{ url_for('symptom_checker') }}"
+               class="assessment-btn">
+                HSV Assessment
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             HEPATITIS B
+        ================================================== -->
+
+        <div class="disease-card">
+
+            <div class="disease-icon">
+                💧
+            </div>
+
+            <h3>
+                Hepatitis B
+            </h3>
+
+            <p>
+                Preliminary assessment based on selected
+                symptom features using a trained Machine
+                Learning model.
+            </p>
+
+            <a href="{{ url_for('symptom_checker') }}"
+               class="assessment-btn">
+                Hepatitis B Assessment
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DISCLAIMER
+===================================================== -->
+
+<section class="disclaimer">
+
+    <h3>
+        Important Health Disclaimer
+    </h3>
+
+    <p>
+        This system is designed for educational and research purposes.
+        It provides a preliminary machine-learning assessment and is
+        not a clinical diagnosis. The result should not be used as a
+        substitute for professional medical advice, laboratory testing,
+        clinical examination, or consultation with a qualified healthcare
+        professional.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <p>
+        AI-Powered STI Preliminary Assessment Assistant
+    </p>
+
+    <p>
+        Educational and Research Purposes Only
+    </p>
+
+</footer>
+
+
+</body>
+</html>

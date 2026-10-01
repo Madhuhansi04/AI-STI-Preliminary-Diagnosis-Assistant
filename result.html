@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Preliminary Assessment</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ===================================================== -->
+<!-- NAVBAR -->
+<!-- ===================================================== -->
+
+<nav class="navbar navbar-dark bg-primary">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold"
+           href="{{ url_for('home') }}">
+
+            AI Medical Diagnosis
+
+        </a>
+
+
+        <a class="btn btn-light"
+           href="{{ url_for('symptom_checker') }}">
+
+            New Assessment
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ===================================================== -->
+<!-- RESULT SECTION -->
+<!-- ===================================================== -->
+
+<section class="py-5">
+
+    <div class="container">
+
+
+        <!-- PAGE TITLE -->
+
+        <div class="text-center mb-5">
+
+            <h1 class="text-primary fw-bold">
+
+                Preliminary AI Assessment
+
+            </h1>
+
+
+            <p class="lead text-muted">
+
+                Machine-learning based preliminary assessment
+
+            </p>
+
+        </div>
+
+
+
+        <div class="row g-4">
+
+
+            <!-- ================================================= -->
+            <!-- LEFT COLUMN -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+
+                <!-- MAIN RESULT CARD -->
+
+                <div class="card shadow h-100">
+
+                    <div class="card-body p-4">
+
+
+                        <h3 class="text-primary fw-bold mb-4">
+
+                            Assessment Result
+
+                        </h3>
+
+
+
+                        <!-- MOST PROBABLE CONDITION -->
+
+                        <div class="text-center py-3">
+
+                            <p class="text-muted mb-2">
+
+                                Most Probable Condition
+
+                            </p>
+
+
+                            <h1 class="fw-bold text-primary">
+
+                                {{ top_disease }}
+
+                            </h1>
+
+
+                            <div class="mt-3">
+
+                                <span class="display-5 fw-bold">
+
+                                    {{ top_probability }}%
+
+                                </span>
+
+                            </div>
+
+
+                            <p class="text-muted">
+
+                                Model probability
+
+                            </p>
+
+                        </div>
+
+
+
+                        <hr>
+
+
+
+                        <!-- ================================================= -->
+                        <!-- SELECTED SYMPTOMS -->
+                        <!-- ================================================= -->
+
+                        <h4 class="fw-bold mt-4">
+
+                            Selected Symptoms
+
+                        </h4>
+
+
+                        {% if selected_symptoms %}
+
+                        <div class="mt-3">
+
+                            {% for symptom in selected_symptoms %}
+
+                            <span class="badge bg-primary p-2 m-1">
+
+                                {{ symptom.replace('_', ' ').title() }}
+
+                            </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        {% else %}
+
+                        <p class="text-muted mt-3">
+
+                            No symptoms were selected.
+
+                        </p>
+
+                        {% endif %}
+
+
+
+                        <!-- ================================================= -->
+                        <!-- RECOMMENDATION -->
+                        <!-- ================================================= -->
+
+                        <hr class="mt-4">
+
+
+                        <h4 class="fw-bold text-primary mt-4">
+
+                            Recommended Next Steps
+
+                        </h4>
+
+
+
+                        {% if top_disease == "HIV/AIDS" %}
+
+                        <div class="alert alert-info mt-3">
+
+
+                            <h5 class="fw-bold">
+
+                                HIV/AIDS Preliminary Assessment
+
+                            </h5>
+
+
+                            <p class="mb-2">
+
+                                The model has identified HIV/AIDS as the
+                                most probable classification based on the
+                                information provided.
+
+                            </p>
+
+
+                            <ul class="mb-0">
+
+                                <li>
+
+                                    Consider consulting a qualified
+                                    healthcare professional.
+
+                                </li>
+
+
+                                <li>
+
+                                    Appropriate laboratory testing may be
+                                    recommended for confirmation.
+
+                                </li>
+
+
+                                <li>
+
+                                    Do not use this result as a confirmed
+                                    medical diagnosis.
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+
+
+                        {% elif top_disease == "HSV" %}
+
+
+                        <div class="alert alert-info mt-3">
+
+
+                            <h5 class="fw-bold">
+
+                                HSV Preliminary Assessment
+
+                            </h5>
+
+
+                            <p class="mb-2">
+
+                                The model has identified HSV as the most
+                                probable classification based on the
+                                information provided.
+
+                            </p>
+
+
+                            <ul class="mb-0">
+
+                                <li>
+
+                                    Consider discussing your symptoms
+                                    with a qualified healthcare professional.
+
+                                </li>
+
+
+                                <li>
+
+                                    Appropriate laboratory or clinical
+                                    testing may be recommended for
+                                    confirmation.
+
+                                </li>
+
+
+                                <li>
+
+                                    Do not use this result as a confirmed
+                                    medical diagnosis.
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+
+
+                        {% elif top_disease == "Hepatitis B" %}
+
+
+                        <div class="alert alert-info mt-3">
+
+
+                            <h5 class="fw-bold">
+
+                                Hepatitis B Preliminary Assessment
+
+                            </h5>
+
+
+                            <p class="mb-2">
+
+                                The model has identified Hepatitis B as the
+                                most probable classification based on the
+                                information provided.
+
+                            </p>
+
+
+                            <ul class="mb-0">
+
+                                <li>
+
+                                    Consider consulting a qualified
+                                    healthcare professional.
+
+                                </li>
+
+
+                                <li>
+
+                                    Appropriate laboratory testing may be
+                                    recommended for further evaluation.
+
+                                </li>
+
+
+                                <li>
+
+                                    Do not use this result as a confirmed
+                                    medical diagnosis.
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+
+
+                        {% else %}
+
+
+                        <div class="alert alert-info mt-3">
+
+
+                            <h5 class="fw-bold">
+
+                                General Recommendation
+
+                            </h5>
+
+
+                            <p class="mb-0">
+
+                                Consider discussing your symptoms with a
+                                qualified healthcare professional if they
+                                persist, worsen, or cause concern.
+                                Appropriate medical testing may be required
+                                for confirmation.
+
+                            </p>
+
+                        </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- RIGHT COLUMN -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+
+                <div class="card shadow">
+
+                    <div class="card-body p-4">
+
+
+                        <h3 class="text-primary fw-bold mb-4">
+
+                            Prediction Probabilities
+
+                        </h3>
+
+
+
+                        <!-- ================================================= -->
+                        <!-- PROBABILITY BARS -->
+                        <!-- ================================================= -->
+
+                        {% for disease, probability in results %}
+
+
+                        <div class="mb-4">
+
+
+                            <div class="d-flex justify-content-between">
+
+
+                                <strong>
+
+                                    {{ disease }}
+
+                                </strong>
+
+
+                                <strong>
+
+                                    {{ probability }}%
+
+                                </strong>
+
+
+                            </div>
+
+
+
+                            <!--
+                                The probability value is stored in a
+                                data attribute instead of inline CSS.
+                                JavaScript sets the width.
+                            -->
+
+                            <div class="progress mt-2"
+                                 style="height: 30px;">
+
+
+                                <div class="progress-bar probability-bar"
+                                     role="progressbar"
+                                     data-probability="{{ probability }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"
+                                     aria-valuenow="{{ probability }}">
+
+                                    {{ probability }}%
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+
+                        <hr>
+
+
+
+                        <!-- ================================================= -->
+                        <!-- GENERAL HEALTH GUIDANCE -->
+                        <!-- ================================================= -->
+
+                        <h4 class="fw-bold text-primary mt-4">
+
+                            General Health Guidance
+
+                        </h4>
+
+
+
+                        <div class="alert alert-light border mt-3">
+
+
+                            <ul class="mb-0">
+
+
+                                <li class="mb-2">
+
+                                    Seek professional medical advice for
+                                    persistent or concerning symptoms.
+
+                                </li>
+
+
+                                <li class="mb-2">
+
+                                    Appropriate laboratory testing should be
+                                    used when confirmation is required.
+
+                                </li>
+
+
+                                <li class="mb-2">
+
+                                    Avoid relying on an AI prediction as a
+                                    substitute for professional assessment.
+
+                                </li>
+
+
+                                <li>
+
+                                    Follow appropriate sexual-health and
+                                    safer-sex practices.
+
+                                </li>
+
+
+                            </ul>
+
+
+                        </div>
+
+
+
+                        <!-- ================================================= -->
+                        <!-- DISCLAIMER -->
+                        <!-- ================================================= -->
+
+                        <div class="alert alert-warning mt-4">
+
+
+                            <strong>
+
+                                Important Health Disclaimer
+
+                            </strong>
+
+
+                            <p class="mb-0 mt-2">
+
+                                This application provides a preliminary
+                                machine-learning assessment for educational
+                                and research purposes. It is NOT a clinical
+                                diagnosis and does not replace professional
+                                medical advice, laboratory testing, or
+                                consultation with a qualified healthcare
+                                professional.
+
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- NAVIGATION BUTTONS -->
+        <!-- ================================================= -->
+
+        <div class="text-center mt-5">
+
+
+            <a href="{{ url_for('symptom_checker') }}"
+               class="btn btn-primary btn-lg">
+
+                Check Again
+
+            </a>
+
+
+
+            <a href="{{ url_for('home') }}"
+               class="btn btn-outline-primary btn-lg ms-2">
+
+                Back to Home
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ===================================================== -->
+<!-- BOOTSTRAP JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+<!-- ===================================================== -->
+<!-- PROBABILITY BAR JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script>
+
+    document.querySelectorAll('.probability-bar').forEach(function (bar) {
+
+        const probability = parseFloat(
+            bar.getAttribute('data-probability')
+        );
+
+
+        if (!isNaN(probability)) {
+
+            const safeProbability = Math.max(
+                0,
+                Math.min(100, probability)
+            );
+
+
+            bar.style.width = safeProbability + '%';
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

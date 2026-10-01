@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Symptom Checker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<!-- ===================================================== -->
+<!-- NAVIGATION -->
+<!-- ===================================================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/">
+            AI Medical Diagnosis
+        </a>
+
+        <div class="navbar-nav ms-auto">
+
+            <a class="nav-link" href="/">
+                Home
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ===================================================== -->
+<!-- PAGE -->
+<!-- ===================================================== -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <!-- PAGE TITLE -->
+
+        <div class="text-center mb-5">
+
+            <h1 class="text-primary fw-bold">
+                Symptom Checker
+            </h1>
+
+            <p class="lead">
+                Describe your symptoms or select symptoms from the list
+                to receive a preliminary AI-based assessment.
+            </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- NLP NATURAL LANGUAGE SECTION -->
+        <!-- ================================================= -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body p-4">
+
+                <h3 class="text-primary fw-bold mb-3">
+                    Describe Your Symptoms
+                </h3>
+
+
+                <p class="text-muted">
+                    You can describe your symptoms in your own words.
+                    The NLP system will identify relevant symptoms from
+                    your description.
+                </p>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('nlp_predict') }}"
+                >
+
+                    <div class="mb-3">
+
+                        <label
+                            for="symptom_text"
+                            class="form-label fw-bold">
+
+                            Your symptom description
+
+                        </label>
+
+
+                        <textarea
+                            class="form-control"
+                            id="symptom_text"
+                            name="symptom_text"
+                            rows="5"
+                            placeholder="Example: I have fever, tiredness and painful urination."
+                            required></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg">
+
+                        Generate NLP Preliminary Assessment
+
+                    </button>
+
+                </form>
+
+
+                <!-- NLP INFORMATION -->
+
+                <div class="alert alert-info mt-4 mb-0">
+
+                    <strong>Natural Language Processing (NLP)</strong>
+
+                    <p class="mb-0 mt-2">
+
+                        The NLP component analyses the symptom description
+                        and identifies symptom terms that correspond to
+                        features used by the trained machine-learning model.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- DIVIDER -->
+        <!-- ================================================= -->
+
+        <div class="text-center my-4">
+
+            <span class="text-muted">
+                OR
+            </span>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- EXISTING CHECKBOX ASSESSMENT -->
+        <!-- ================================================= -->
+
+        <form
+            method="POST"
+            action="{{ url_for('predict') }}"
+        >
+
+            <div class="row g-4">
+
+                <!-- ========================================= -->
+                <!-- LEFT SIDE - SYMPTOMS -->
+                <!-- ========================================= -->
+
+                <div class="col-lg-6">
+
+                    <div class="card shadow">
+
+                        <div class="card-body p-4">
+
+                            <h3 class="text-primary fw-bold mb-4">
+                                Select Your Symptoms
+                            </h3>
+
+
+                            <p class="text-muted">
+                                General / STI-related symptoms
+                            </p>
+
+
+                            {% for symptom in features %}
+
+                            <div class="form-check border rounded p-3 mb-2">
+
+                                <input
+                                    class="form-check-input ms-0 me-2"
+                                    type="checkbox"
+                                    name="symptoms"
+                                    value="{{ symptom }}"
+                                    id="symptom{{ loop.index }}"
+                                >
+
+
+                                <label
+                                    class="form-check-label"
+                                    for="symptom{{ loop.index }}">
+
+                                    {{ symptom.replace('_', ' ').title() }}
+
+                                </label>
+
+                            </div>
+
+                            {% endfor %}
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg w-100 mt-4">
+
+                                Analyse Selected Symptoms
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- RIGHT SIDE -->
+                <!-- ========================================= -->
+
+                <div class="col-lg-6">
+
+                    <div class="card shadow">
+
+                        <div class="card-body p-4">
+
+                            <h3 class="text-primary fw-bold mb-4">
+                                Preliminary AI Assessment
+                            </h3>
+
+
+                            <!-- HOW IT WORKS -->
+
+                            <div class="alert alert-info">
+
+                                <strong>How it works</strong>
+
+                                <p class="mb-0 mt-2">
+
+                                    You can either describe your symptoms
+                                    using natural language or select symptoms
+                                    from the list.
+
+                                    The system uses Natural Language Processing
+                                    and a Random Forest machine-learning model
+                                    to generate a preliminary assessment.
+
+                                </p>
+
+                            </div>
+
+
+                            <!-- NLP FLOW -->
+
+                            <h5 class="mt-4 text-primary">
+                                NLP Assessment
+                            </h5>
+
+                            <p class="text-muted">
+
+                                Example:
+
+                                <br>
+
+                                <em>
+                                    "I have fever and painful urination."
+                                </em>
+
+                            </p>
+
+
+                            <div class="progress mb-4">
+
+                                <div
+                                    class="progress-bar"
+                                    style="width: 0%">
+
+                                    0%
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- MODEL INFORMATION -->
+
+                            <h5 class="text-primary">
+                                Machine Learning Models
+                            </h5>
+
+
+                            <div class="mb-3">
+
+                                <strong>
+                                    HIV/AIDS
+                                </strong>
+
+                                <div class="progress mt-1">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: 0%">
+
+                                        0%
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="mb-3">
+
+                                <strong>
+                                    HSV
+                                </strong>
+
+                                <div class="progress mt-1">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: 0%">
+
+                                        0%
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="mb-3">
+
+                                <strong>
+                                    Hepatitis B
+                                </strong>
+
+                                <div class="progress mt-1">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: 0%">
+
+                                        0%
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- IMPORTANT NOTICE -->
+
+                            <div class="alert alert-warning">
+
+                                <strong>
+                                    Important:
+                                </strong>
+
+                                <p class="mb-0 mt-2">
+
+                                    This application provides a preliminary
+                                    machine-learning assessment for educational
+                                    and research purposes.
+
+                                    It is not a clinical diagnosis and does
+                                    not replace professional medical advice,
+                                    laboratory testing, or consultation with
+                                    a qualified healthcare professional.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
+<footer class="bg-dark text-white text-center py-4">
+
+    <div class="container">
+
+        <p class="mb-1 fw-bold">
+            AI-Powered STI Preliminary Assessment Assistant
+        </p>
+
+        <p class="mb-0 text-light">
+
+            Developed for educational and research purposes.
+
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>
